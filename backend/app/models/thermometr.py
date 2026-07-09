@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from database import Model
+from app.database import Model
 from datetime import datetime
 import enum
 from sqlalchemy import Enum
@@ -11,7 +11,7 @@ class LocationEnum(str, enum.Enum):
 class ThermometerModel(Model):
     __tablename__ = "thermometr_readings"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True, init=False)
     timestamp: Mapped[datetime]
     temperature: Mapped[float]
     humidity: Mapped[float]

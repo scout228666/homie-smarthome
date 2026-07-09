@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from datetime import datetime
 from typing import Literal
 
@@ -12,3 +12,13 @@ class STemperatureIn(STemperatureBase):
 class STemperatureCreate(STemperatureBase):
     timestamp: datetime
     location: Literal["indoor", "outdoor"]
+
+class STemperatureGet(BaseModel):
+    period: datetime
+    avg_temperature: float
+    avg_humidity: float
+
+    @field_validator("avg_temperature", "avg_humidity")
+    @classmethod
+    def round_values(cls, value):
+        return round(value, 1)
