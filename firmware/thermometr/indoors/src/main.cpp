@@ -43,6 +43,14 @@ void setup() {
 
   connectWiFi();
 
+  if(!display.begin(SSD1306_SWITCHAPVCC, 0x3C)){
+    for(;;);
+  }
+  setDisplay(1, WHITE);
+}
+
+void loop() {
+
   float inside_temp, inside_humidity;
   int code = postData(inside_temp, inside_humidity);
   isValid(code);
@@ -51,20 +59,10 @@ void setup() {
   code = getData(outside_temp, outside_humidity);
   isValid(code);
 
-
-  if(!display.begin(SSD1306_SWITCHAPVCC, 0x3C)){
-    for(;;);
-  }
-  setDisplay(1, WHITE);
   printRow(0, 0, "Inside: " + String(inside_temp, 1) + (char)247 + "C");
   printRow(0, 12, "Outside: " + String(outside_temp, 1) + (char)247 + "C");
   printRow(0, 24, "Humidity: " + String(outside_humidity, 0) + "%");
   display.display();
 
-
-  esp_deep_sleep(300000000);
-}
-
-void loop() {
-  // void
+  delay(300000); // 5 minutes
 }

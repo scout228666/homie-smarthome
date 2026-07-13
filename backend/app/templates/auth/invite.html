@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}homie — код приглашения{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+  {% include "auth/_brand.html" %}
+
+  <div class="steps" aria-hidden="true">
+    <span class="dot is-active"></span>
+    <span class="rule"></span>
+    <span class="dot"></span>
+  </div>
+
+  <p class="eyebrow">Шаг 1 из 2</p>
+  <h1 class="title">Код приглашения</h1>
+  <p class="subtitle">Введите 4-значный код, который выдал администратор дома</p>
+
+  <div id="form-message" class="form-message" role="alert">
+    {% if error %}{{ error }}{% endif %}
+  </div>
+
+  <form
+    id="invite-form"
+    hx-post="/api/auth/invite/"
+    hx-target="#form-message"
+    hx-swap="innerHTML"
+    hx-indicator="#invite-submit"
+    novalidate
+  >
+
+    <div class="code-group" data-code-group>
+      <input class="code-box" type="text" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="off" aria-label="Цифра 1" data-code-input>
+      <input class="code-box" type="text" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="off" aria-label="Цифра 2" data-code-input>
+      <input class="code-box" type="text" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="off" aria-label="Цифра 3" data-code-input>
+      <input class="code-box" type="text" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="off" aria-label="Цифра 4" data-code-input>
+    </div>
+
+    <input type="hidden" name="invite_code" id="invite_code" value="">
+
+    <button class="btn btn-primary" type="submit" id="invite-submit" disabled>
+      <span class="btn-label">Продолжить</span>
+      <span class="htmx-indicator">Проверяем…</span>
+    </button>
+  </form>
+
+  <p class="auth-footer">
+    Уже есть аккаунт? <a href="/api/auth/login/">Войти</a>
+  </p>
+</div>
+{% endblock %}

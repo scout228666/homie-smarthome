@@ -1,0 +1,500 @@
+/* ==========================================================================
+   homie — auth flow styles
+   Design language: dark blueprint. A faint architectural grid sits behind
+   everything (this is a floor-plan app, after all), and the one warm accent
+   stands in for "a light left on" — the smallest signal that a home, or a
+   device, is alive and reachable.
+   ========================================================================== */
+
+:root {
+  /* Color */
+  --bg: #10131a;
+  --surface: #181c25;
+  --surface-raised: #1f2430;
+  --border: #2a2f3b;
+  --border-soft: #21252f;
+  --text: #eceef3;
+  --text-muted: #8890a2;
+  --text-faint: #565d6e;
+  --accent: #ffa94d;
+  --accent-strong: #ffbd70;
+  --accent-dim: #8a5a2c;
+  --accent-glow: rgba(255, 169, 77, 0.32);
+  --danger: #ff6b6b;
+  --danger-glow: rgba(255, 107, 107, 0.22);
+  --success: #4ade80;
+
+  /* Type */
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", monospace;
+
+  /* Shape */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* --------------------------------------------------------------------------
+   Ambient blueprint grid — a floor-plan drawn faintly behind the glass.
+   -------------------------------------------------------------------------- */
+
+.blueprint-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--border-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 40%, #000 0%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 55% at 50% 40%, #000 0%, transparent 75%);
+  opacity: 0.55;
+}
+
+.blueprint-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 50% 0%, var(--accent-glow) 0%, transparent 60%);
+  opacity: 0.18;
+}
+
+/* --------------------------------------------------------------------------
+   Shell / layout
+   -------------------------------------------------------------------------- */
+
+.auth-shell {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px 32px 32px;
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.6);
+  animation: card-in 0.5s var(--ease) both;
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Mark — a house glyph with one lit window. The "device is alive" signal.
+   -------------------------------------------------------------------------- */
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.brand-mark {
+  width: 44px;
+  height: 44px;
+}
+
+.brand-mark .window {
+  fill: var(--accent);
+  animation: breathe 3.2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.brand-mark .house {
+  fill: none;
+  stroke: var(--text-muted);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.65; }
+  50% { opacity: 1; filter: drop-shadow(0 0 6px var(--accent-glow)); }
+}
+
+.brand-word {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.brand-word span {
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   Step indicator — used only where the flow is genuinely sequential
+   (invite code -> registration). Login is a separate path, no steps shown.
+   -------------------------------------------------------------------------- */
+
+.steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.steps .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.steps .dot.is-active {
+  background: var(--accent);
+  transform: scale(1.3);
+}
+
+.steps .rule {
+  width: 20px;
+  height: 1px;
+  background: var(--border);
+}
+
+/* --------------------------------------------------------------------------
+   Copy
+   -------------------------------------------------------------------------- */
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  text-align: center;
+  margin: 0 0 6px;
+}
+
+h1.title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-align: center;
+  margin: 0 0 8px;
+}
+
+p.subtitle {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 0 0 28px;
+}
+
+/* --------------------------------------------------------------------------
+   Form primitives
+   -------------------------------------------------------------------------- */
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 7px;
+}
+
+.input,
+.field input[type="text"],
+.field input[type="password"] {
+  width: 100%;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.input::placeholder {
+  color: var(--text-faint);
+}
+
+.input:focus {
+  border-color: var(--accent-dim);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-field .input {
+  padding-right: 42px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  border-radius: 6px;
+}
+
+.password-toggle:hover {
+  color: var(--text-muted);
+}
+
+.password-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.field-hint {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-top: 6px;
+}
+
+.field-error {
+  font-size: 12px;
+  color: var(--danger);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   Invite code — four boxes standing in for four lit windows.
+   -------------------------------------------------------------------------- */
+
+.code-group {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 4px 0 22px;
+}
+
+.code-box {
+  width: 56px;
+  height: 64px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  caret-color: var(--accent);
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), transform 0.15s var(--ease);
+}
+
+.code-box:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.code-box.is-filled {
+  border-color: var(--accent-dim);
+}
+
+.code-box.is-error {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px var(--danger-glow);
+  animation: shake 0.32s var(--ease);
+}
+
+@keyframes shake {
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+
+.btn {
+  width: 100%;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 13px 16px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s var(--ease), transform 0.15s var(--ease), opacity 0.15s var(--ease);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #1a1206;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.08);
+}
+
+.btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: none;
+}
+
+.btn-primary .htmx-indicator {
+  display: none;
+}
+
+.btn-primary.htmx-request .btn-label {
+  opacity: 0.55;
+}
+
+.btn-primary.htmx-request .htmx-indicator {
+  display: inline;
+}
+
+/* --------------------------------------------------------------------------
+   Footer / links
+   -------------------------------------------------------------------------- */
+
+.auth-footer {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.auth-footer a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+.form-message {
+  min-height: 0;
+}
+
+.form-message:not(:empty) {
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  background: var(--danger-glow);
+  color: #ffd3d3;
+  border: 1px solid rgba(255, 107, 107, 0.35);
+}
+
+.status-line {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  color: var(--text-faint);
+  z-index: 1;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 6px rgba(74, 222, 128, 0.7);
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility / motion
+   -------------------------------------------------------------------------- */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-mark .window,
+  .auth-card {
+    animation: none !important;
+  }
+  .code-box.is-error {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .code-box {
+    width: 48px;
+    height: 58px;
+    font-size: 22px;
+  }
+  .auth-card {
+    padding: 28px 20px 24px;
+  }
+}

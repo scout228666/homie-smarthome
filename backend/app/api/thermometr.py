@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, status
 from app.database import SessionDep
 from typing import Literal
 from app.schemas.thermometr import STemperatureCreate, STemperatureIn, STemperatureGet
@@ -6,7 +6,7 @@ from app.models.thermometr import ThermometerModel
 from datetime import datetime, timedelta
 from sqlalchemy import func, select
 
-thermometr_router = APIRouter(prefix="/thermometr")
+thermometr_router = APIRouter(prefix="/api/thermometr")
 
 @thermometr_router.post("/{location}")
 async def add_temperature(location: Literal["outdoor", "indoor"], session: SessionDep, data: STemperatureIn) -> STemperatureCreate:
@@ -36,3 +36,14 @@ async def get_hourly_temp(location: Literal["outdoor", "indoor"], session: Sessi
     result = await session.execute(query)
     return result.mappings().all()
 
+@thermometr_router.get("/{location}/latest")
+async def get_latest_record(location: Literal["outdoor", "indoor"], session: SessionDep) -> STemperatureCreate :
+    query = select(ThermometerModel).where(ThermometerModel.location == location).order_by(ThermometerModel.timestamp.desc()).limit(1)
+    
+    result = await session.execute(query)
+    latest_record = result.scalar_one_or_none()
+    
+    if latest_record is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No records found for the specified location.")
+    
+    return latest_record

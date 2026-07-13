@@ -13,6 +13,8 @@ class STemperatureCreate(STemperatureBase):
     timestamp: datetime
     location: Literal["indoor", "outdoor"]
 
+    model_config = ConfigDict(from_attributes=True)
+
 class STemperatureGet(BaseModel):
     period: datetime
     avg_temperature: float

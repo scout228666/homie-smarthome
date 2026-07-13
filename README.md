@@ -74,7 +74,7 @@ homie/
 ### Run
 
 ```bash
-git clone https://github.com/yourusername/homie.git
+git clone https://github.com/scout228666/homie-smarthome.git
 cd homie
 cp .env.example .env
 docker-compose up -d

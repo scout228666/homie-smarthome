@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}homie{% endblock %}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ static('css/main.css') }}">
+  {% block extra_head %}{% endblock %}
+
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+</head>
+<body class="auth-body">
+  <div class="blueprint-bg" aria-hidden="true"></div>
+
+  <main class="auth-shell">
+    {% block content %}{% endblock %}
+  </main>
+
+  <div class="status-line" aria-hidden="true">
+    <span class="status-dot"></span>
+    <span>homie · self-hosted</span>
+  </div>
+
+  <script src="{{ static('js/auth.js') }}"></script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

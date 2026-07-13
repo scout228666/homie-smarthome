@@ -6,7 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import Depends
 from app.config import settings
 
-engine = create_async_engine(settings.DB_URL)
+DB_URL = f"postgresql+asyncpg://{settings.postgres_user}:{settings.postgres_password}@localhost:{settings.db_port}/{settings.postgres_db}"
+engine = create_async_engine(DB_URL)
 new_session = async_sessionmaker(engine, expire_on_commit=False)    
 
 class Model(MappedAsDataclass, DeclarativeBase):
