@@ -1,0 +1,48 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: homie_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      
+  
+  backend:
+    build: ./backend
+    container_name: homie_backend
+    restart: unless-stopped
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+  auth-service:
+    build: ./auth-service
+    container_name: homie_auth
+    volumes:
+      - ./auth-service:/app
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      SECRET_KEY: ${DJANGO_SECRET_KEY}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      DEBUG: ${DJANGO_DEBUG}
+    depends_on:
+      - postgres
+    ports:
+      - "8001:8000"
+
+volumes:
+  postgres_data:
