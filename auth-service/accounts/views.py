@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework import status
-from auth.serializer import RegisterSerializer, InviteCheckSerializer, LogInSerializer
+from accounts.serializer import RegisterSerializer, InviteCheckSerializer, LogInSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 class RegisterView(APIView):
@@ -12,14 +12,19 @@ class RegisterView(APIView):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            response = Response(serializer.data, status=status.HTTP_201_CREATED)
+            response["HX-Redirect"] = "http://localhost:8000/login"
+            return 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class InviteCheckView(APIView):
     def post(self, request):
         serializer = InviteCheckSerializer(data=request.data)
         if serializer.is_valid():
-            return Response({"detail": "ok"}, status=status.HTTP_200_OK)
+            code = serializer.validated_data["invite_code"]
+            response = Response(status=status.HTTP_200_OK)
+            response["HX-Redirect"] = f"http://localhost:8000/register?invite_code={code}"
+            return response
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginView(TokenObtainPairView):
@@ -36,7 +41,7 @@ class LoginView(TokenObtainPairView):
                 key='access_token',
                 value=access,
                 httponly=True,
-                secure=True,   
+                secure=False,   
                 samesite='Lax',
                 max_age=60 * 15, 
             )
@@ -44,9 +49,11 @@ class LoginView(TokenObtainPairView):
                 key='refresh_token',
                 value=refresh,
                 httponly=True,
-                secure=True,
+                secure=False,
                 samesite='Lax',
                 max_age=60 * 60 * 24 * 7,
             )
+            
+            response["HX-Redirect"] = "http://localhost:8000/dashboard"
 
         return response

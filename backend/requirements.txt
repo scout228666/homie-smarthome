@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+asyncpg
+alembic
+pydantic
+pydantic-settings
+aiowebostv
+jinja2>=3.1.0
+pyjwt[crypto]>=2.8.0
+passlib[bcrypt]>=1.7.4
+
+

@@ -6,6 +6,8 @@ from fastapi.responses import RedirectResponse
 from fastapi import Depends
 import jwt
 from fastapi.templating import Jinja2Templates
+from app.config import settings
+from fastapi.staticfiles import StaticFiles
 
 
 templates = Jinja2Templates(directory="app/templates")
@@ -18,11 +20,13 @@ def get_current_user(request: Request) -> dict | None:
         payload = jwt.decode(token, settings.jwt_secret_key, algorithms=["HS256"])
     except jwt.PyJWTError:
         return None
-    return payload  # тут будет username и что ещё положили в claims
+    return payload  
 
 app = FastAPI()
 app.include_router(thermometr_router)
-app.include(pages_router)
+app.include_router(pages_router)
+
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 @app.get("/dashboard")
 async def dashboard(

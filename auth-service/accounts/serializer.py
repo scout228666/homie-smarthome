@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from auth.models import User, Invite
+from accounts.models import User, Invite
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
@@ -49,5 +49,5 @@ class InviteCheckSerializer(serializers.Serializer):
 
     def validate_invite_code(self, value):
         if not Invite.objects.filter(code=value, is_active=True).exists():
-            raise serializers.ValidationError("Код приглашения недействителен")
+            raise serializers.ValidationError("Invitation code is invalid")
         return value

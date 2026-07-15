@@ -1,7 +1,7 @@
 from django.urls import path
-from auth.views import InviteCheckView, LoginView, RegisterView
+from accounts.views import InviteCheckView, LoginView, RegisterView
 
-app_name = "auth"
+app_name = "accounts"
 
 urlpatterns = [
     path('invite/', InviteCheckView.as_view(), name='invite_check'),
