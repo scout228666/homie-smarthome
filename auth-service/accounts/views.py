@@ -14,7 +14,7 @@ class RegisterView(APIView):
             serializer.save()
             response = Response(serializer.data, status=status.HTTP_201_CREATED)
             response["HX-Redirect"] = "http://localhost:8000/login"
-            return 
+            return response
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class InviteCheckView(APIView):
