@@ -22,7 +22,7 @@
 
   <form
     id="invite-form"
-    hx-post="/api/auth/invite/"
+    hx-post="http://localhost:8001/api/auth/invite/"
     hx-target="#form-message"
     hx-swap="innerHTML"
     hx-indicator="#invite-submit"
@@ -45,7 +45,7 @@
   </form>
 
   <p class="auth-footer">
-    Уже есть аккаунт? <a href="/api/auth/login/">Войти</a>
+    Уже есть аккаунт? <a href="http://localhost:8000/login">Войти</a>
   </p>
 </div>
 {% endblock %}

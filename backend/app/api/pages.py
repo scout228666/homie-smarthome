@@ -17,12 +17,12 @@ def get_current_user(request: Request) -> dict | None:
 
 @pages_router.get("/invite")
 async def invite_page(request: Request):
-    return templates.TemplateResponse("auth/invite.html", {"request": request})
+    return templates.TemplateResponse(request, "auth/invite.html")
 
 @pages_router.get("/register")
-async def register_page(request: Request):
-    return templates.TemplateResponse("auth/register.html", {"request": request})
+async def register_page(request: Request, invite_code: str = ""):
+    return templates.TemplateResponse(request, "auth/register.html", {"invite_code": invite_code})
 
 @pages_router.get("/login")
 async def login_page(request: Request):
-    return templates.TemplateResponse("auth/login.html", {"request": request})
+    return templates.TemplateResponse(request, "auth/login.html")

@@ -4,6 +4,8 @@
  * - password visibility toggles
  * No framework needed here; htmx handles the actual form submissions.
  */
+ 
+ htmx.config.withCredentials = true;
 
 (function initCodeGroup() {
   const group = document.querySelector("[data-code-group]");
