@@ -1,0 +1,3 @@
+#define WIFI_SSID "DOM-74"
+#define WIFI_PASSWORD "Agri2107"
+#define SERVER_URL_POST "http://192.168.1.x:8000/api/sensors/outdoor"

@@ -19,14 +19,15 @@ bool readSensor(float &temp, float &humidity){
     return true;
 }
 
-void connectWiFi(){
+void connectWiFI(){
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
     while(WiFi.status() != WL_CONNECTED){
         delay(500);
     }
 }
 
-int postData(float &temp, float &humidity){
+int postData(){
+    float temp, humidity;
     if(!readSensor(temp, humidity)) return 1;
 
     if(WiFi.status() == WL_CONNECTED){

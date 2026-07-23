@@ -7,10 +7,8 @@ void setup() {
   dht.begin();
 
   connectWiFi();
-}
 
-void loop() {
-   float temp, humidity;
+  float temp, humidity;
   int code = postData(temp, humidity);
 
   if(code == 1){ 
@@ -25,5 +23,9 @@ void loop() {
   Serial.println("Temp: " + String(temp));
   Serial.println("Hum: " + String(humidity));
   
-  delay(10000);
+  esp_deep_sleep(300000000);
+}
+
+void loop() {
+  // void
 }
